@@ -37,7 +37,7 @@ jobs:
         id: deploy-prod
         run: |
           echo "Deploying to EdgeOne Pages (production)..."
-          npx edgeone pages deploy . -n KALEIDXSCOPE -t ${{ secrets.EDGEONE_API_TOKEN }} -e production
+          npx edgeone pages deploy . -n kaleidxscope -t ${{ secrets.EDGEONE_API_TOKEN }} -e production
         env:
           EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
 
@@ -46,7 +46,7 @@ jobs:
         id: deploy-preview
         run: |
           echo "Deploying to EdgeOne Pages (preview)..."
-          DEPLOY_OUTPUT=$(npx edgeone pages deploy . -n KALEIDXSCOPE -t ${{ secrets.EDGEONE_API_TOKEN }} -e preview 2>&1)
+          DEPLOY_OUTPUT=$(npx edgeone pages deploy . -n kaleidxscope -t ${{ secrets.EDGEONE_API_TOKEN }} -e preview 2>&1)
           echo "$DEPLOY_OUTPUT"
           DEPLOY_URL=$(echo "$DEPLOY_OUTPUT" | grep "EDGEONE_DEPLOY_URL=" | cut -d'=' -f2- || echo "")
           PROJECT_ID=$(echo "$DEPLOY_OUTPUT" | grep "EDGEONE_PROJECT_ID=" | cut -d'=' -f2- || echo "")
