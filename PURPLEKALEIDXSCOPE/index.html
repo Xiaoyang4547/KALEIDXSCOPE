@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🟣 舞萌DX - 紫色之门解锁进度 Version 1.0 -</title>
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../github-footer.css">
+    <script defer src="https://s.awmc.cc/script.js" data-website-id="4416a8d7-49f0-4b07-a14a-e82d30716b2a"></script>
+</head>
+<body class="theme-purple">
+    <div class="container">
+        <header>
+            <a href="../index.html" class="back-home-link" data-umami-event="back-to-home-purple">← 返回主页</a>
+            <h1>🟣 舞萌DX - 紫色之门解锁进度 -</h1>
+            <p class="subtitle">🚪 BLACK ROSEちほー10（800km）</p>
+            <p class="subtitle">🌈 无完美挑战</p>
+            <p class="subtitle">AMWC TEAM 制作 - QQ群: 1072033605</p>
+        </header>
+
+        <!-- 区域开放倒计时 -->
+        <div class="countdown-section" id="countdown-section">
+            <h2 class="countdown-title">区域开放倒计时</h2>
+            <p class="countdown-note">2026年3月25日 10:00:00 开放</p>
+            <div class="countdown-display" id="countdown-display">
+                <div class="countdown-unit">
+                    <span class="countdown-value" id="countdown-days">--</span>
+                    <span class="countdown-label">天</span>
+                </div>
+                <div class="countdown-unit">
+                    <span class="countdown-value" id="countdown-hours">--</span>
+                    <span class="countdown-label">时</span>
+                </div>
+                <div class="countdown-unit">
+                    <span class="countdown-value" id="countdown-minutes">--</span>
+                    <span class="countdown-label">分</span>
+                </div>
+                <div class="countdown-unit">
+                    <span class="countdown-value" id="countdown-seconds">--</span>
+                    <span class="countdown-label">秒</span>
+                </div>
+            </div>
+            <p class="countdown-status" id="countdown-status"></p>
+        </div>
+
+        <!-- 解锁说明 -->
+        <div class="requirements-section">
+            <h2>解锁条件</h2>
+            <ol class="requirements-list">
+                <li>门更新后，将旅行伙伴队长设置为 BLACK ROSE 区域的アウル或其任意变种</li>
+                <li>单人连续游玩 3 首 / 双人连续游玩 4 首言ノ葉Project 曲目（从下方曲目池选择）</li>
+                <li>不限难度，不能重复，不可跳关，宴谱/段位不计</li>
+            </ol>
+        </div>
+
+        <div class="controls">
+            <button id="export-base64" class="btn btn-success" data-umami-event="button-export-base64-purple">导出数据</button>
+            <button id="import-btn" class="btn btn-warning" data-umami-event="button-import-purple">导入数据</button>
+            <button id="reset" class="btn btn-danger" data-umami-event="button-reset-purple">重置</button>
+        </div>
+
+        <!-- 导入模态框 -->
+        <div id="import-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>导入单人/双人列表</h2>
+                    <span class="modal-close" id="modal-close" data-umami-event="modal-close-purple">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>请粘贴 Base64 格式的数据：</p>
+                    <textarea id="import-data" placeholder="粘贴数据 here..."></textarea>
+                    <div class="modal-buttons">
+                        <button id="import-confirm" class="btn btn-primary" data-umami-event="button-import-confirm-purple">确认导入</button>
+                        <button id="import-cancel" class="btn btn-secondary" data-umami-event="button-import-cancel-purple">取消</button>
+                    </div>
+                    <div id="import-error" class="error-message" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 单人游戏 -->
+        <div class="mode-section" id="solo-mode-section">
+            <h2 class="mode-title">🎮 单人游戏</h2>
+            <p class="mode-desc">需连续游玩 3 首不重复曲目</p>
+            <div class="mode-actions">
+                <button id="solo-random" class="btn btn-primary" data-umami-event="button-solo-random-purple">随机推荐</button>
+                <button id="solo-clear" class="btn btn-secondary btn-small" data-umami-event="button-solo-clear-purple">清空</button>
+            </div>
+            <div class="run-songs" id="solo-run-songs">
+                <p class="run-placeholder" id="solo-placeholder">点击「随机推荐」或从下方曲目池添加</p>
+                <div class="run-list" id="solo-run-list"></div>
+            </div>
+        </div>
+
+        <!-- 双人游戏 -->
+        <div class="mode-section" id="multi-mode-section">
+            <h2 class="mode-title">👥 双人游戏</h2>
+            <p class="mode-desc">需连续游玩 4 首不重复曲目</p>
+            <div class="mode-actions">
+                <button id="multi-random" class="btn btn-primary" data-umami-event="button-multi-random-purple">随机推荐</button>
+                <button id="multi-clear" class="btn btn-secondary btn-small" data-umami-event="button-multi-clear-purple">清空</button>
+            </div>
+            <div class="run-songs" id="multi-run-songs">
+                <p class="run-placeholder" id="multi-placeholder">点击「随机推荐」或从下方曲目池添加</p>
+                <div class="run-list" id="multi-run-list"></div>
+            </div>
+        </div>
+
+        <!-- 曲目池：可从池中选择乐曲添加到单人/双人 -->
+        <div class="songs-pool-section">
+            <h2>曲目池（言ノ葉Project 钥匙曲目）</h2>
+            <p class="pool-desc">点击下方按钮可将曲目添加到单人（3首）或双人（4首）游玩列表</p>
+            <div class="songs-list pool-list" id="pool-songs-list"></div>
+        </div>
+
+        <!-- 门中随机选曲 -->
+        <div class="gate-challenge-section gate-challenge-section--purple">
+            <div class="gate-challenge-header" id="gate-challenge-header">
+                <h2 class="gate-challenge-title">🎯 抽卡选曲</h2>
+                <button type="button" class="gate-challenge-toggle" id="gate-challenge-toggle" aria-expanded="false" data-umami-event="gate-challenge-toggle-purple">
+                    <span class="toggle-icon">▼</span>
+                    <span class="toggle-text">展开</span>
+                </button>
+            </div>
+            <div class="gate-challenge-body" id="gate-challenge-body" style="display: none;">
+                <p class="gate-challenge-desc">解锁门后挑战门时，前两首为随机曲目，第三首固定为有明/Ariake。点击「抽卡！」随机抽取，选中曲目高亮。</p>
+                <div class="gate-challenge-actions">
+                    <button id="gate-random" class="btn btn-primary" data-umami-event="gate-challenge-random-purple">抽卡！</button>
+                </div>
+                <div class="gate-challenge-run" id="gate-challenge-run">
+                    <div class="gate-track-block" id="gate-track1-block">
+                        <h4 class="gate-track-title">TRACK 1</h4>
+                        <div class="gate-track-songs" id="gate-track1-songs"></div>
+                    </div>
+                    <div class="gate-track-block" id="gate-track2-block">
+                        <h4 class="gate-track-title">TRACK 2</h4>
+                        <div class="gate-track-songs" id="gate-track2-songs"></div>
+                    </div>
+                    <div class="gate-track-block" id="gate-track3-block">
+                        <h4 class="gate-track-title">TRACK 3</h4>
+                        <div class="gate-track-songs" id="gate-track3-songs"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 门曲 -->
+        <div class="reference-section">
+            <h2 class="reference-section-title">参考视频</h2>
+            <div class="reference-block">
+                <h3 class="reference-block-title">门曲 TRACK 3</h3>
+                <div class="reference-item">
+                    <div class="reference-cover">
+                        <img src="https://assets.awmc.cc/covers/11749.png" alt="有明/Ariake" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Crect fill=%22%23ddd%22 width=%2280%22 height=%2280%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2210%22%3E%E6%9A%82%E6%97%A0%E6%9B%B2%E7%BB%98%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="reference-info">
+                        <span class="reference-song-name">有明/Ariake</span>
+                        <span class="reference-song-id">ID 11749</span>
+                    </div>
+                    <a href="https://search.bilibili.com/all?keyword=舞萌%20有明%20Ariake" target="_blank" rel="noopener noreferrer" class="bilibili-btn" data-umami-event="bilibili-purple-gate-song">B站查看谱面</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 社群 -->
+        <div class="community-section">
+            <a href="https://qm.qq.com/q/YyCOXfCveY" target="_blank" rel="noopener noreferrer" class="community-link" data-umami-event="community-link-purple">加入社群参与讨论！</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <div class="github-footer-float">
+        <a href="https://github.com/Michaelwucoc/KALEIDXSCOPE" target="_blank" rel="noopener noreferrer" class="github-footer-link" data-umami-event="github-link-purple" title="GitHub 源码">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+        <span class="github-footer-update">更新于 __LAST_UPDATE__</span>
+    </div>
+    <script src="../github-footer.js"></script>
+</body>
+</html>

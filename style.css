@@ -1,0 +1,388 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    background: #ffffff;
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+    transition: background-color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #2d2d2d;
+        color: #e0e0e0;
+    }
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .container {
+        background: #3d3d3d;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+}
+
+/* 活动横幅 */
+.activity-banner {
+    width: 100%;
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+    padding: 60px 20px;
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .activity-banner {
+        background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+    }
+}
+
+.banner-title {
+    font-size: 4em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    letter-spacing: 2px;
+    transition: color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .banner-title {
+        color: #e0e0e0;
+    }
+}
+
+.banner-subtitle {
+    font-size: 1.5em;
+    color: #666;
+    font-weight: 300;
+    transition: color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .banner-subtitle {
+        color: #a0a0a0;
+    }
+}
+
+/* 门列表区域 */
+.doors-section {
+    padding: 60px 40px;
+    background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+    transition: background 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .doors-section {
+        background: linear-gradient(to bottom, #3d3d3d 0%, #2d2d2d 100%);
+    }
+}
+
+.section-title {
+    font-size: 2.5em;
+    color: #667eea;
+    text-align: center;
+    margin-bottom: 50px;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.doors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 40px;
+    justify-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 门卡片 - 只展示图片本身，无背景无框 */
+.door-card {
+    width: 100%;
+    max-width: 500px;
+    cursor: pointer;
+    transition: transform 0.4s ease;
+    position: relative;
+}
+
+.door-card:hover {
+    transform: scale(1.02);
+}
+
+.door-card:active {
+    transform: scale(0.98);
+}
+
+.door-image-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.door-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    transition: transform 0.4s;
+}
+
+.door-card:hover .door-image {
+    transform: scale(1.05);
+}
+
+.door-overlay {
+    display: none; /* 只展示图片，不展示文字 */
+}
+
+.door-label {
+    display: block;
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.door-subtitle {
+    display: block;
+    font-size: 1.1em;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+/* 即将开放的门 */
+.door-card.coming-soon {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.door-card.coming-soon:hover {
+    transform: none;
+}
+
+.door-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2em;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+}
+
+/* 紫色之门：默认完全隐藏（不占位），点击解锁或倒计时结束后放出 */
+.purple-door-card {
+    display: none !important;
+}
+
+/* 倒计时结束后：与蓝/白门完全一致，无特殊样式 */
+.purple-door-card.purple-revealed {
+    display: block !important;
+}
+
+/* 时间未到通过特殊手段解锁：神秘动画 + 模糊效果 */
+.purple-door-card.purple-revealed.purple-early-unlock {
+    animation: purple-reveal 1.2s ease forwards;
+}
+
+.purple-door-card.purple-early-unlock {
+    filter: blur(4px);
+}
+
+.purple-door-card.purple-early-unlock:hover {
+    filter: blur(2px);
+}
+
+/* 黑色之门：默认完全隐藏，点击 14 次解锁 */
+.black-door-card {
+    display: none !important;
+}
+
+.black-door-card.black-revealed {
+    display: block !important;
+}
+
+.black-door-card.black-revealed.black-early-unlock {
+    animation: black-reveal 1.2s ease forwards;
+}
+
+.black-door-card.black-early-unlock {
+    filter: blur(4px);
+}
+
+.black-door-card.black-early-unlock:hover {
+    filter: blur(2px);
+}
+
+@keyframes black-reveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes purple-reveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 说明区域 */
+.info-section {
+    padding: 30px;
+    text-align: center;
+    background: #f8f9fa;
+    border-top: 2px solid #e9ecef;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .info-section {
+        background: #2d2d2d;
+        border-top-color: #4a4a4a;
+    }
+}
+
+.info-text {
+    font-size: 1.1em;
+    color: #666;
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .info-text {
+        color: #a0a0a0;
+    }
+}
+
+/* 社群 */
+.community-section {
+    padding: 25px;
+    text-align: center;
+    background: #f8f9fa;
+    border-top: 2px solid #e9ecef;
+    margin-top: 30px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .community-section {
+        background: #2d2d2d;
+        border-top-color: #4a4a4a;
+    }
+}
+
+.community-link {
+    display: inline-block;
+    padding: 12px 24px;
+    background: #17a2b8;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.community-link:hover {
+    background: #138496;
+    transform: translateY(-2px);
+}
+
+/* 响应式设计 */
+html {
+    overflow-x: hidden;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 12px;
+    }
+
+    .container {
+        border-radius: 15px;
+    }
+
+    .activity-banner {
+        padding: 40px 16px;
+    }
+
+    .banner-title {
+        font-size: 2.5em;
+    }
+
+    .banner-subtitle {
+        font-size: 1.2em;
+    }
+
+    .doors-section {
+        padding: 40px 20px;
+    }
+
+    .section-title {
+        font-size: 1.8em;
+        margin-bottom: 30px;
+    }
+
+    .doors-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .door-card {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .banner-title {
+        font-size: 2em;
+    }
+
+    .banner-subtitle {
+        font-size: 1em;
+    }
+
+    .section-title {
+        font-size: 1.5em;
+    }
+
+    .doors-section {
+        padding: 30px 16px;
+    }
+}

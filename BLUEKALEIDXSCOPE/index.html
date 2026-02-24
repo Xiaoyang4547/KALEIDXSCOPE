@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔵 舞萌DX - 蓝色之门解锁进度 Version 1.6 -</title>
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../github-footer.css">
+    <script defer src="https://s.awmc.cc/script.js" data-website-id="4416a8d7-49f0-4b07-a14a-e82d30716b2a"></script>
+</head>
+<body class="theme-blue">
+    <div class="container">
+        <header>
+            <a href="../index.html" class="back-home-link" data-umami-event="back-to-home-blue">← 返回主页</a>
+            <h1>🔵 舞萌DX - 蓝色之门解锁进度 -</h1>
+            <p class="subtitle">KALEIDXSCOPE 活动 - 需要完成29首青春区域曲目</p>
+            <p class="subtitle">AMWC TEAM 制作 - QQ群: 1072033605</p>
+        </header>
+
+        <!-- 倒计时/时间表 切换 -->
+        <div class="schedule-section">
+            <div class="schedule-header">
+                <h2>青门时间表</h2>
+                <div class="view-toggle">
+                    <button id="view-countdown" class="toggle-btn active" data-umami-event="blue-view-countdown">倒计时</button>
+                    <button id="view-timeline" class="toggle-btn" data-umami-event="blue-view-timeline">时间表</button>
+                </div>
+            </div>
+
+            <!-- 倒计时视图（默认） -->
+            <div class="countdown-view" id="countdown-view">
+                <p class="countdown-note">条件切换在次日凌晨 4:00（北京时间）</p>
+                <div class="countdown-block" id="blue-gate-countdown">
+                    <h3 class="countdown-title">青门</h3>
+                    <div class="countdown-period-info" id="blue-gate-period"></div>
+                    <div class="countdown-bar-wrap">
+                        <div class="countdown-bar">
+                            <div class="countdown-fill" id="blue-gate-fill"></div>
+                        </div>
+                    </div>
+                    <div class="countdown-text" id="blue-gate-countdown-text"></div>
+                </div>
+                <div class="countdown-block" id="sky-perfect-countdown">
+                    <h3 class="countdown-title">天空街完美挑战</h3>
+                    <div class="countdown-period-info" id="sky-perfect-period"></div>
+                    <div class="countdown-bar-wrap">
+                        <div class="countdown-bar">
+                            <div class="countdown-fill" id="sky-perfect-fill"></div>
+                        </div>
+                    </div>
+                    <div class="countdown-text" id="sky-perfect-countdown-text"></div>
+                </div>
+            </div>
+
+            <!-- 时间表视图 -->
+            <div class="timeline-view" id="timeline-view" style="display: none;">
+                <div class="timeline-legend">
+                    <span class="legend-item master">MASTER</span>
+                    <span class="legend-item expert">EXPERT</span>
+                    <span class="legend-item basic">BASIC</span>
+                    <span class="legend-hint">点击分段展开查看完整信息</span>
+                </div>
+
+                <div class="timeline-block">
+                    <h3 class="timeline-title">青门</h3>
+                    <div class="timeline-bar-scroll">
+                    <div class="timeline-bar" id="blue-gate-timeline">
+                    <div class="timeline-segment master expandable" style="flex: 4" data-full="2.1-2.4 MASTER LIFE 50">
+                        <span class="segment-label">2.1-2.4<br>MASTER 50</span>
+                        <span class="segment-label-full">2.1-2.4<br>MASTER LIFE 50</span>
+                    </div>
+                    <div class="timeline-segment expert expandable" style="flex: 7" data-full="2.5-2.11 EXPERT LIFE 100">
+                        <span class="segment-label">2.5-2.11<br>EXPERT 100</span>
+                        <span class="segment-label-full">2.5-2.11<br>EXPERT LIFE 100</span>
+                    </div>
+                    <div class="timeline-segment basic expandable" style="flex: 17" data-full="2.12-后续 BASIC LIFE 999">
+                        <span class="segment-label">2.12-后续<br>BASIC 999</span>
+                        <span class="segment-label-full">2.12-后续<br>BASIC LIFE 999</span>
+                    </div>
+                </div>
+                    </div>
+            </div>
+
+            <div class="timeline-block">
+                <h3 class="timeline-title">天空街完美挑战</h3>
+                <div class="timeline-bar-scroll">
+                <div class="timeline-bar" id="sky-perfect-timeline">
+                    <div class="timeline-segment master expandable" style="flex: 7" data-full="1.30-2.5 MASTER LIFE 10">
+                        <span class="segment-label">1.30-2.5<br>MASTER 10</span>
+                        <span class="segment-label-full">1.30-2.5<br>MASTER LIFE 10</span>
+                    </div>
+                    <div class="timeline-segment expert expandable" style="flex: 7" data-full="2.6-2.12 EXPERT LIFE 50">
+                        <span class="segment-label">2.6-2.12<br>EXPERT 50</span>
+                        <span class="segment-label-full">2.6-2.12<br>EXPERT LIFE 50</span>
+                    </div>
+                    <div class="timeline-segment expert expandable" style="flex: 7" data-full="2.13-2.19 EXPERT LIFE 100">
+                        <span class="segment-label">2.13-2.19<br>EXPERT 100</span>
+                        <span class="segment-label-full">2.13-2.19<br>EXPERT LIFE 100</span>
+                    </div>
+                    <div class="timeline-segment basic expandable" style="flex: 10" data-full="2.19-后续 BASIC LIFE 300">
+                        <span class="segment-label">2.19-后续<br>BASIC 300</span>
+                        <span class="segment-label-full">2.19-后续<br>BASIC LIFE 300</span>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="completed-count">0</div>
+                <div class="stat-label">已完成</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="remaining-count">29</div>
+                <div class="stat-label">未完成</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="progress-percent">0%</div>
+                <div class="stat-label">完成进度</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="show-remaining" class="btn btn-info" data-umami-event="button-show-remaining-blue">仅显示未完成</button>
+            <button id="show-all" class="btn btn-info" data-umami-event="button-show-all-blue">显示全部</button>
+            <button id="export-base64" class="btn btn-success" data-umami-event="button-export-base64-blue">导出数据</button>
+            <button id="import-btn" class="btn btn-warning" data-umami-event="button-import-blue">导入数据</button>
+            <button id="reset" class="btn btn-danger" data-umami-event="button-reset-blue">重置进度</button>
+        </div>
+
+        <!-- 导入模态框 -->
+        <div id="import-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>导入进度数据</h2>
+                    <span class="modal-close" id="modal-close" data-umami-event="modal-close-blue">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>请粘贴 Base64 格式的数据：</p>
+                    <textarea id="import-data" placeholder="粘贴数据 here..."></textarea>
+                    <div class="modal-buttons">
+                        <button id="import-confirm" class="btn btn-primary" data-umami-event="button-import-confirm-blue">确认导入</button>
+                        <button id="import-cancel" class="btn btn-secondary" data-umami-event="button-import-cancel-blue">取消</button>
+                    </div>
+                    <div id="import-error" class="error-message" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <label>
+                <input type="checkbox" id="filter-checkbox" data-umami-event="checkbox-filter-blue"> 仅显示未完成曲目
+            </label>
+        </div>
+
+        <div class="songs-list" id="songs-list">
+            <!-- 乐曲列表将通过JavaScript动态生成 -->
+        </div>
+
+        <div class="remaining-section" id="remaining-section" style="display: none;">
+            <h2>未完成曲目</h2>
+            <div class="remaining-list" id="remaining-list"></div>
+        </div>
+
+        <!-- 门中随机选曲（解锁门之后挑战门的内容） -->
+        <div class="gate-challenge-section gate-challenge-section--blue">
+            <div class="gate-challenge-header" id="gate-challenge-header">
+                <h2 class="gate-challenge-title">🎯 抽卡选曲</h2>
+                <button type="button" class="gate-challenge-toggle" id="gate-challenge-toggle" aria-expanded="false" data-umami-event="gate-challenge-toggle-blue">
+                    <span class="toggle-icon">▼</span>
+                    <span class="toggle-text">展开</span>
+                </button>
+            </div>
+            <div class="gate-challenge-body" id="gate-challenge-body" style="display: none;">
+                <p class="gate-challenge-desc">解锁门后挑战门时，前两首为随机曲目，第三首固定为果ての空、僕らが見た光。点击「抽卡！」随机抽取，选中曲目高亮。</p>
+                <div class="gate-challenge-actions">
+                    <button id="gate-random" class="btn btn-primary" data-umami-event="gate-challenge-random-blue">抽卡！</button>
+                </div>
+                <div class="gate-challenge-run" id="gate-challenge-run">
+                    <div class="gate-track-block" id="gate-track1-block">
+                        <h4 class="gate-track-title">TRACK 1</h4>
+                        <div class="gate-track-songs" id="gate-track1-songs"></div>
+                    </div>
+                    <div class="gate-track-block" id="gate-track2-block">
+                        <h4 class="gate-track-title">TRACK 2</h4>
+                        <div class="gate-track-songs" id="gate-track2-songs"></div>
+                    </div>
+                    <div class="gate-track-block" id="gate-track3-block">
+                        <h4 class="gate-track-title">TRACK 3</h4>
+                        <div class="gate-track-songs" id="gate-track3-songs"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 完美挑战曲目 & 门曲 -->
+        <div class="reference-section">
+            <h2 class="reference-section-title">参考视频</h2>
+            <div class="reference-block">
+                <h3 class="reference-block-title">完美挑战曲目</h3>
+                <div class="reference-item">
+                    <div class="reference-cover">
+                        <img src="https://assets.awmc.cc/covers/11739.png" alt="184億回のマルチトニック" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\'%3E%3Crect fill=\'%23ddd\' width=\'80\' height=\'80\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\' font-size=\'10\'%3E无曲绘%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="reference-info">
+                        <span class="reference-song-name">184億回のマルチトニック</span>
+                        <span class="reference-song-id">ID 11739</span>
+                    </div>
+                    <a href="https://search.bilibili.com/all?keyword=舞萌%20184億回のマルチトニック" target="_blank" rel="noopener noreferrer" class="bilibili-btn" data-umami-event="bilibili-perfect-challenge-blue">B站查看谱面</a>
+                </div>
+            </div>
+            <div class="reference-block">
+                <h3 class="reference-block-title">门曲</h3>
+                <div class="reference-item">
+                    <div class="reference-cover">
+                        <img src="https://assets.awmc.cc/covers/11740.png" alt="果ての空、僕らが見た光" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Crect fill=%22%23ddd%22 width=%2280%22 height=%2280%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2210%22%3E%E6%9A%82%E6%97%A0%E6%9B%B2%E7%BB%98%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="reference-info">
+                        <span class="reference-song-name">果ての空、僕らが見た光</span>
+                        <span class="reference-song-id">ID 11740</span>
+                    </div>
+                    <a href="https://search.bilibili.com/all?keyword=舞萌%20果ての空、僕らが見た光" target="_blank" rel="noopener noreferrer" class="bilibili-btn" data-umami-event="bilibili-gate-song-blue">B站查看谱面</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 社群 -->
+        <div class="community-section">
+            <a href="https://qm.qq.com/q/YyCOXfCveY" target="_blank" rel="noopener noreferrer" class="community-link" data-umami-event="community-link-blue">加入社群参与讨论！</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <div class="github-footer-float">
+        <a href="https://github.com/Michaelwucoc/KALEIDXSCOPE" target="_blank" rel="noopener noreferrer" class="github-footer-link" data-umami-event="github-link-blue" title="GitHub 源码">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+        <span class="github-footer-update">更新于 __LAST_UPDATE__</span>
+    </div>
+    <script src="../github-footer.js"></script>
+</body>
+</html>

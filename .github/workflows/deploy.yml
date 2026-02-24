@@ -1,0 +1,69 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    types: [opened]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.11.0'
+
+      - name: Inject last update time
+        run: |
+          LAST_UPDATE=$(git log -1 --format=%cd --date=format:'%Y-%m-%d')
+          echo "Last update: $LAST_UPDATE"
+          find . -name "*.html" -not -path "./.git/*" | while read f; do
+            sed -i "s/__LAST_UPDATE__/$LAST_UPDATE/g" "$f"
+          done
+
+      - name: Deploy to EdgeOne Pages (Production)
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        id: deploy-prod
+        run: |
+          echo "Deploying to EdgeOne Pages (production)..."
+          npx edgeone pages deploy . -n KALEIDXSCOPE -t ${{ secrets.EDGEONE_API_TOKEN }} -e production
+        env:
+          EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
+
+      - name: Deploy to EdgeOne Pages (Preview)
+        if: github.event_name == 'pull_request'
+        id: deploy-preview
+        run: |
+          echo "Deploying to EdgeOne Pages (preview)..."
+          DEPLOY_OUTPUT=$(npx edgeone pages deploy . -n KALEIDXSCOPE -t ${{ secrets.EDGEONE_API_TOKEN }} -e preview 2>&1)
+          echo "$DEPLOY_OUTPUT"
+          DEPLOY_URL=$(echo "$DEPLOY_OUTPUT" | grep "EDGEONE_DEPLOY_URL=" | cut -d'=' -f2- || echo "")
+          PROJECT_ID=$(echo "$DEPLOY_OUTPUT" | grep "EDGEONE_PROJECT_ID=" | cut -d'=' -f2- || echo "")
+          echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_OUTPUT
+          echo "PROJECT_ID=$PROJECT_ID" >> $GITHUB_OUTPUT
+          DEPLOY_END_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "DEPLOY_END_TIME=$DEPLOY_END_TIME" >> $GITHUB_OUTPUT
+        env:
+          EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
+
+      - name: Comment PR with preview link
+        if: github.event_name == 'pull_request'
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            🚀 **EdgeOne Pages 部署完成**
+            
+            | 项目 | 预览链接 | 项目ID | 更新时间 |
+            |---|---|---|---|
+            | [${{ github.event.repository.name }}](https://console.tencentcloud.com/edgeone/pages/project/${{ steps.deploy-preview.outputs.PROJECT_ID }}/deploy) | [🔗 点击预览](${{ steps.deploy-preview.outputs.DEPLOY_URL }}) | ${{ steps.deploy-preview.outputs.PROJECT_ID }} | ${{ steps.deploy-preview.outputs.DEPLOY_END_TIME }} |

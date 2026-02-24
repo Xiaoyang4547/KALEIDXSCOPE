@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚫️ KALEIDXSCOPE -黒の扉- 舞萌DX 黑色之门</title>
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../github-footer.css">
+    <script defer src="https://s.awmc.cc/script.js" data-website-id="4416a8d7-49f0-4b07-a14a-e82d30716b2a"></script>
+</head>
+<body class="theme-black">
+    <div class="container">
+        <header>
+            <a href="../index.html" class="back-home-link" data-umami-event="back-to-home-black">← 返回主页</a>
+            <h1>⚫️ KALEIDXSCOPE -黒の扉-</h1>
+            <p class="subtitle">门 TRACK 3 📀 宙天 #11753</p>
+            <p class="subtitle">🚪 メトロポリスちほー9（1400km）</p>
+            <p class="subtitle">🌈 完美挑战：雨露霜雪 #11752（1200km）</p>
+            <p class="subtitle">AMWC TEAM 制作 - QQ群: 1072033605</p>
+        </header>
+
+        <!-- 区域开放时间 -->
+        <div class="countdown-section" id="countdown-section">
+            <h2 class="countdown-title">区域开放时间</h2>
+            <p class="countdown-note countdown-note--tbd">待定</p>
+        </div>
+
+        <!-- 解锁说明 -->
+        <div class="requirements-section">
+            <h2>解锁条件</h2>
+            <ol class="requirements-list">
+                <li>在门更新后，至少游玩一次所有 KOP6 及以前的以下 KOP 曲目</li>
+                <li>宴谱除外，不限难度</li>
+                <li><strong>需完成全部 11 首钥匙曲目才能获得钥匙</strong></li>
+            </ol>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="completed-count">0</div>
+                <div class="stat-label">已完成</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="remaining-count">11</div>
+                <div class="stat-label">未完成</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="progress-percent">0%</div>
+                <div class="stat-label">完成进度</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="show-remaining" class="btn btn-info" data-umami-event="button-show-remaining-black">仅显示未完成</button>
+            <button id="show-all" class="btn btn-info" data-umami-event="button-show-all-black">显示全部</button>
+            <button id="export-base64" class="btn btn-success" data-umami-event="button-export-base64-black">导出数据</button>
+            <button id="import-btn" class="btn btn-warning" data-umami-event="button-import-black">导入数据</button>
+            <button id="reset" class="btn btn-danger" data-umami-event="button-reset-black">重置进度</button>
+        </div>
+
+        <!-- 导入模态框 -->
+        <div id="import-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>导入进度数据</h2>
+                    <span class="modal-close" id="modal-close" data-umami-event="modal-close-black">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>请粘贴 Base64 格式的数据：</p>
+                    <textarea id="import-data" placeholder="粘贴数据 here..."></textarea>
+                    <div class="modal-buttons">
+                        <button id="import-confirm" class="btn btn-primary" data-umami-event="button-import-confirm-black">确认导入</button>
+                        <button id="import-cancel" class="btn btn-secondary" data-umami-event="button-import-cancel-black">取消</button>
+                    </div>
+                    <div id="import-error" class="error-message" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <label>
+                <input type="checkbox" id="filter-checkbox" data-umami-event="checkbox-filter-black"> 仅显示未完成曲目
+            </label>
+        </div>
+
+        <h2 class="section-title">钥匙曲目进度（需全部完成）</h2>
+        <div class="songs-list" id="songs-list"></div>
+
+        <div class="remaining-section" id="remaining-section" style="display: none;">
+            <h2>未完成曲目</h2>
+            <div class="remaining-list" id="remaining-list"></div>
+        </div>
+
+        <!-- 门中随机选曲 -->
+        <div class="gate-challenge-section gate-challenge-section--black">
+            <div class="gate-challenge-header" id="gate-challenge-header">
+                <h2 class="gate-challenge-title">🎯 抽卡选曲</h2>
+                <button type="button" class="gate-challenge-toggle" id="gate-challenge-toggle" aria-expanded="false" data-umami-event="gate-challenge-toggle-black">
+                    <span class="toggle-icon">▼</span>
+                    <span class="toggle-text">展开</span>
+                </button>
+            </div>
+            <div class="gate-challenge-body" id="gate-challenge-body" style="display: none;">
+                <p class="gate-challenge-desc">解锁门后挑战门时，前两首为随机曲目，第三首固定为宙天。点击「抽卡！」随机抽取，选中曲目高亮。</p>
+                <div class="gate-challenge-actions">
+                    <button id="gate-random" class="btn btn-primary" data-umami-event="gate-challenge-random-black">抽卡！</button>
+                </div>
+                <div class="gate-challenge-run" id="gate-challenge-run">
+                    <div class="gate-track-block" id="gate-track1-block">
+                        <h4 class="gate-track-title">TRACK 1</h4>
+                        <div class="gate-track-songs" id="gate-track1-songs"></div>
+                    </div>
+                    <div class="gate-track-block" id="gate-track2-block">
+                        <h4 class="gate-track-title">TRACK 2</h4>
+                        <div class="gate-track-songs" id="gate-track2-songs"></div>
+                    </div>
+                    <div class="gate-track-block" id="gate-track3-block">
+                        <h4 class="gate-track-title">TRACK 3</h4>
+                        <div class="gate-track-songs" id="gate-track3-songs"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 门曲 & 完美挑战 -->
+        <div class="reference-section">
+            <h2 class="reference-section-title">参考视频</h2>
+            <div class="reference-block">
+                <h3 class="reference-block-title">门曲 TRACK 3</h3>
+                <div class="reference-item">
+                    <div class="reference-cover">
+                        <img src="https://assets.awmc.cc/covers/11753.png" alt="宙天" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Crect fill=%22%23ddd%22 width=%2280%22 height=%2280%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2210%22%3E%E6%9A%82%E6%97%A0%E6%9B%B2%E7%BB%98%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="reference-info">
+                        <span class="reference-song-name">宙天</span>
+                        <span class="reference-song-id">ID 11753</span>
+                    </div>
+                    <a href="https://search.bilibili.com/all?keyword=舞萌%20宙天" target="_blank" rel="noopener noreferrer" class="bilibili-btn" data-umami-event="bilibili-black-gate-song">B站查看谱面</a>
+                </div>
+            </div>
+            <div class="reference-block">
+                <h3 class="reference-block-title">完美挑战</h3>
+                <div class="reference-item">
+                    <div class="reference-cover">
+                        <img src="https://assets.awmc.cc/covers/11752.png" alt="雨露霜雪" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Crect fill=%22%23ddd%22 width=%2280%22 height=%2280%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2210%22%3E%E6%9A%82%E6%97%A0%E6%9B%B2%E7%BB%98%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="reference-info">
+                        <span class="reference-song-name">雨露霜雪</span>
+                        <span class="reference-song-id">ID 11752（1200km）</span>
+                    </div>
+                    <a href="https://search.bilibili.com/all?keyword=舞萌%20雨露霜雪" target="_blank" rel="noopener noreferrer" class="bilibili-btn" data-umami-event="bilibili-black-perfect-challenge">B站查看谱面</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 社群 -->
+        <div class="community-section">
+            <a href="https://qm.qq.com/q/YyCOXfCveY" target="_blank" rel="noopener noreferrer" class="community-link" data-umami-event="community-link-black">加入社群参与讨论！</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <div class="github-footer-float">
+        <a href="https://github.com/Michaelwucoc/KALEIDXSCOPE" target="_blank" rel="noopener noreferrer" class="github-footer-link" data-umami-event="github-link-black" title="GitHub 源码">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+        <span class="github-footer-update">更新于 __LAST_UPDATE__</span>
+    </div>
+    <script src="../github-footer.js"></script>
+</body>
+</html>
